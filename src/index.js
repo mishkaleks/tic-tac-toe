@@ -1,17 +1,30 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+// basic
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Favicon from 'react-favicon'
+
+// material-ui
+import { ThemeProvider } from '@mui/material/styles'
+
+// helpers
+import theme from './theme/mu-theme'
+
+// components
+import App from './components/App/index'
+
+// icons
+import favIcon1 from './public/icon_cross.svg'
+import favIcon2 from './public/icon_zero.svg'
+
+// styles
+import './index.css'
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  (
+    <ThemeProvider theme={theme}>
+      <Favicon url={[favIcon1, favIcon2]} />
+      <App />
+    </ThemeProvider>
+  ),
   document.getElementById('root')
-);
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+)
