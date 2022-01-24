@@ -6,6 +6,7 @@ import { makeStyles } from '@mui/styles'
 
 // components
 import Spinner from '../Spinner'
+import BeginPlay from '../BeginPlay'
 import PageBg from '../../public/mobile_page_bg.png'
 
 const useStyles = makeStyles(() => ({
@@ -39,7 +40,7 @@ const StartScreen = () => {
 
   return (
     <div className={classes.root}>
-      {isLoading ? <Spinner/> : 'Content'}
+      {isLoading ? <Spinner /> : <BeginPlay />}
     </div>
   )
 }
