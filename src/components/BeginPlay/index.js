@@ -5,6 +5,7 @@ import React, { useState } from 'react'
 import { makeStyles } from '@mui/styles'
 
 // components
+import GameScreen from '../GameScreen'
 import InitPlayer from '../InitPlayer'
 import { ReactComponent as IconCross } from '../../public/icon_cross.svg'
 import { ReactComponent as IconZero } from '../../public/icon_zero.svg'
@@ -70,7 +71,7 @@ const BeginPlay = () => {
     <div>
       {
         showGameBoard
-          ? 'Game board'
+          ? <GameScreen />
           : <InitPlayer formData={formData} handleClick={handleClick} handleChangeName={handleChangeName} />
       }
     </div>
