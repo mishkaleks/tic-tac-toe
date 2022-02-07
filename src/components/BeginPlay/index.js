@@ -12,6 +12,7 @@ import { ReactComponent as IconZero } from '../../public/icon_zero.svg'
 
 // helpers
 import { findWinner } from '../../helpers/findWinner'
+import { allFieldsClicked } from '../../helpers/allFieldsClicked'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -142,15 +143,29 @@ const BeginPlay = () => {
 
     if (fields[id].value === '') {
       fields[id].value = chip
+
+      // game over if is there a winner
+      const winner = findWinner(fields)
+      if (winner) {
+        return setState({ ...state, isNextMove: !isNextMove, gameOver: !gameOver, message: winner })
+      }
+
+      // all fields are clicked
+      const draw = allFieldsClicked(fields)
+      if (draw) {
+        return setState({
+          ...state,
+          isNextMove: !isNextMove,
+          gameOver: !gameOver,
+          message: 'The players agreed to a draw'
+        })
+      }
+
+      // player move change
+      return setState({ ...state, isNextMove: !isNextMove })
     }
 
-    const winner = findWinner(fields)
-    // game over if is there a winner
-    if (winner) {
-      return setState({ ...state, isNextMove: !isNextMove, gameOver: !gameOver, message: winner })
-    }
-    // player move change
-    return setState({ ...state, isNextMove: !isNextMove })
+    return false
   }
 
   const handleCloseModal = () => {
