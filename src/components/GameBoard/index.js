@@ -11,6 +11,7 @@ import Box from './Box'
 const useStyles = makeStyles(() => ({
   root: {
     maxWidth: '252px',
+    marginBottom: '30px',
     padding: '30px',
     borderRadius: '20px',
     background: 'linear-gradient(223.26deg, #FFFFFF 1.5%, #F3F3F3 80.41%)',
