@@ -147,18 +147,13 @@ const BeginPlay = () => {
       // game over if is there a winner
       const winner = findWinner(fields)
       if (winner) {
-        return setState({ ...state, isNextMove: !isNextMove, gameOver: !gameOver, message: winner })
+        return setState({ ...state, gameOver: !gameOver, message: winner })
       }
 
       // all fields are clicked
       const draw = allFieldsClicked(fields)
       if (draw) {
-        return setState({
-          ...state,
-          isNextMove: !isNextMove,
-          gameOver: !gameOver,
-          message: 'The players agreed to a draw'
-        })
+        return setState({ ...state, gameOver: !gameOver, message: 'The players agreed to a draw' })
       }
 
       // player move change
