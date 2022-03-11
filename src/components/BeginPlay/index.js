@@ -95,9 +95,11 @@ const BeginPlay = () => {
     // pointer indicating which player should move next
     isNextMove: true,
     gameOver: false,
+    pause: false,
     message: ''
   })
-  const { lastStep, showGameBoard, initError, firstName, secondName, fields, isNextMove, gameOver, message } = state
+  const { lastStep, showGameBoard, initError, firstName, secondName, fields, isNextMove, gameOver, message,
+    pause } = state
 
   const formData = lastStep
     ? {
@@ -167,6 +169,43 @@ const BeginPlay = () => {
     setState({ ...state, gameOver: false })
   }
 
+  const handleOpenRestartGameModal = () => {
+    setState({ ...state, pause: true })
+  }
+
+  const handleCloseRestartGameModal = () => {
+    setState({ ...state, pause: false })
+  }
+
+  const handleRestartMatch = () => {
+    const restartFields = fields.map((item) => {
+      return {
+        ...item,
+        value: ''
+      }
+    })
+
+    setState({ ...state, fields: restartFields, isNextMove: true, pause: false })
+  }
+
+  const handleRestartGame = () => {
+    const restartFields = fields.map((item) => {
+      return {
+        ...item,
+        value: ''
+      }
+    })
+
+    setState({
+      ...state,
+      showGameBoard: false,
+      lastStep: false,
+      fields: restartFields,
+      isNextMove: true,
+      pause: false
+    })
+  }
+
   return (
     <div className={classes.root}>
       {
@@ -177,8 +216,15 @@ const BeginPlay = () => {
               isNextMove={isNextMove}
               gameOver={gameOver}
               message={message}
+              firstName={firstName}
+              secondName={secondName}
+              pause={pause}
               handleMarkField={handleMarkField}
               handleCloseModal={handleCloseModal}
+              handleOpenRestartGameModal={handleOpenRestartGameModal}
+              handleCloseRestartGameModal={handleCloseRestartGameModal}
+              handleRestartMatch={handleRestartMatch}
+              handleRestartGame={handleRestartGame}
             />
           )
           : <InitPlayer formData={formData} handleClick={handleClick} handleChangeName={handleChangeName} />
