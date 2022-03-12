@@ -12,6 +12,7 @@ import Indicator from '../Indicator'
 import Navbar from '../Navbar'
 import RestartGameModal from '../Modals/RestartGameModal'
 import Scoreboard from '../Scoreboard'
+import InfoPanel from '../InfoPanel'
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -23,17 +24,22 @@ const useStyles = makeStyles(() => ({
 }))
 
 const GameScreen = (props) => {
-  const { fields, isNextMove, gameOver, message, firstName, secondName, pause, xPoints, oPoints, handleMarkField,
-    handleCloseModal, handleOpenRestartGameModal, handleCloseRestartGameModal, handleRestartMatch,
-    handleRestartGame, handlePlayAgain } = props
+  const { fields, isNextMove, gameOver, message, firstName, secondName, pause, crossPoints, zeroPoints, numberCrossWins,
+    numberZeroWins, numberDraws, handleMarkField, handleCloseModal, handleOpenRestartGameModal,
+    handleCloseRestartGameModal, handleRestartMatch, handleRestartGame, handlePlayAgain } = props
 
   const classes = useStyles()
 
   return (
     <div className={classes.root}>
+      <InfoPanel
+        numberCrossWins={numberCrossWins}
+        numberZeroWins={numberZeroWins}
+        numberDraws={numberDraws}
+      />
       <Scoreboard
-        xPoints={xPoints}
-        oPoints={oPoints}
+        crossPoints={crossPoints}
+        zeroPoints={zeroPoints}
         firstPlayer={firstName}
         secondPlayer={secondName}
       />
@@ -64,8 +70,11 @@ GameScreen.propTypes = {
   firstName: PropTypes.string.isRequired,
   secondName: PropTypes.string.isRequired,
   pause: PropTypes.bool.isRequired,
-  xPoints: PropTypes.number.isRequired,
-  oPoints: PropTypes.number.isRequired,
+  crossPoints: PropTypes.number.isRequired,
+  zeroPoints: PropTypes.number.isRequired,
+  numberCrossWins: PropTypes.number.isRequired,
+  numberZeroWins: PropTypes.number.isRequired,
+  numberDraws: PropTypes.number.isRequired,
   handleMarkField: PropTypes.func.isRequired,
   handleCloseModal: PropTypes.func.isRequired,
   handleOpenRestartGameModal: PropTypes.func.isRequired,

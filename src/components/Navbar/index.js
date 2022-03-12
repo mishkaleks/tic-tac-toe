@@ -4,10 +4,10 @@ import PropTypes from 'prop-types'
 
 // material-ui
 import { makeStyles } from '@mui/styles'
-
-// components
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
+
+// components
 import { ReactComponent as IconRestart } from '../../public/icon_restart.svg'
 
 const useStyles = makeStyles(() => ({

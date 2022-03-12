@@ -35,7 +35,7 @@ const useStyles = makeStyles(() => ({
 }))
 
 const Scoreboard = (props) => {
-  const { firstPlayer, secondPlayer, xPoints, oPoints } = props
+  const { firstPlayer, secondPlayer, crossPoints, zeroPoints } = props
 
   const classes = useStyles()
 
@@ -43,9 +43,9 @@ const Scoreboard = (props) => {
     <div className={classes.root}>
       <Typography variant="h4" className={classes.playerName}>{firstPlayer}</Typography>
       <div className={classes.score}>
-        <Typography variant="h4">{xPoints}</Typography>
+        <Typography variant="h4">{crossPoints}</Typography>
         <Typography variant="h4">:</Typography>
-        <Typography variant="h4">{oPoints}</Typography>
+        <Typography variant="h4">{zeroPoints}</Typography>
       </div>
       <Typography variant="h4" className={classes.playerName}>{secondPlayer}</Typography>
     </div>
@@ -55,8 +55,8 @@ const Scoreboard = (props) => {
 Scoreboard.propTypes = {
   firstPlayer: PropTypes.string.isRequired,
   secondPlayer: PropTypes.string.isRequired,
-  xPoints: PropTypes.number.isRequired,
-  oPoints: PropTypes.number.isRequired,
+  crossPoints: PropTypes.number.isRequired,
+  zeroPoints: PropTypes.number.isRequired,
 }
 
 export default Scoreboard

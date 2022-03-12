@@ -45,9 +45,9 @@ const BeginPlay = () => {
     showGameBoard: false,
     initError: false,
     firstName: '',
-    xPoints: 0,
-    oPoints: 0,
     secondName: '',
+    crossPoints: 0,
+    zeroPoints: 0,
     fields: [
       {
         id: 0,
@@ -98,10 +98,13 @@ const BeginPlay = () => {
     isNextMove: true,
     gameOver: false,
     pause: false,
-    message: ''
+    message: '',
+    numberCrossWins: 0,
+    numberZeroWins: 0,
+    numberDraws: 0
   })
-  const { lastStep, showGameBoard, initError, firstName, secondName, fields, isNextMove, gameOver, message,
-    pause, xPoints, oPoints } = state
+  const { lastStep, showGameBoard, initError, firstName, secondName, fields, isNextMove, gameOver, message, pause,
+    crossPoints, zeroPoints, numberCrossWins, numberZeroWins, numberDraws } = state
 
   const formData = lastStep
     ? {
@@ -155,15 +158,22 @@ const BeginPlay = () => {
           ...state,
           gameOver: !gameOver,
           message: winner,
-          xPoints: isNextMove ? xPoints + 1 : xPoints,
-          oPoints: isNextMove ? oPoints : oPoints + 1
+          crossPoints: isNextMove ? crossPoints + 1 : crossPoints,
+          zeroPoints: isNextMove ? zeroPoints : zeroPoints + 1,
+          numberCrossWins: isNextMove ? numberCrossWins + 1 : numberCrossWins,
+          numberZeroWins: isNextMove ? numberZeroWins : numberZeroWins + 1
         })
       }
 
       // all fields are clicked
       const draw = allFieldsClicked(fields)
       if (draw) {
-        return setState({ ...state, gameOver: !gameOver, message: 'The players agreed to a draw' })
+        return setState({
+          ...state,
+          gameOver: !gameOver,
+          message: 'The players agreed to a draw',
+          numberDraws: numberDraws + 1
+        })
       }
 
       // player move change
@@ -211,8 +221,8 @@ const BeginPlay = () => {
       fields: restartFields,
       isNextMove: true,
       pause: false,
-      xPoints: 0,
-      oPoints: 0
+      crossPoints: 0,
+      zeroPoints: 0
     })
   }
 
@@ -246,8 +256,11 @@ const BeginPlay = () => {
               firstName={firstName}
               secondName={secondName}
               pause={pause}
-              xPoints={xPoints}
-              oPoints={oPoints}
+              crossPoints={crossPoints}
+              zeroPoints={zeroPoints}
+              numberCrossWins={numberCrossWins}
+              numberZeroWins={numberZeroWins}
+              numberDraws={numberDraws}
               handleMarkField={handleMarkField}
               handleCloseModal={handleCloseModal}
               handleOpenRestartGameModal={handleOpenRestartGameModal}
