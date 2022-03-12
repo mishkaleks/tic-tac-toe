@@ -7,6 +7,7 @@ import { makeStyles } from '@mui/styles'
 import Modal from '@mui/material/Modal'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
+import Button from '@mui/material/Button'
 
 const useStyles = makeStyles(() => ({
   content: {
@@ -20,11 +21,16 @@ const useStyles = makeStyles(() => ({
     background: 'linear-gradient(223.26deg, #FFFFFF 1.5%, #F3F3F3 80.41%)',
     boxShadow: '3px 4px 16px rgba(16, 20, 106, 0.09)',
     textAlign: 'center'
+  },
+  buttonRoot: {
+    width: 'auto',
+    height: 'auto',
+    boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'
   }
 }))
 
 const BasicModal = (props) => {
-  const { open, message, handleClose } = props
+  const { open, message, handleClose, handlePlayAgain } = props
 
   const classes = useStyles()
 
@@ -38,6 +44,9 @@ const BasicModal = (props) => {
       <Box className={classes.content}>
         <Typography id="modal-title" variant="h3" component="h3">Game over</Typography>
         <Typography id="modal-description" variant="h4" component="h4">{message}</Typography>
+        <Button onClick={handlePlayAgain} classes={{ root: classes.buttonRoot }}>
+          Play again
+        </Button>
       </Box>
     </Modal>
   )
@@ -46,7 +55,8 @@ const BasicModal = (props) => {
 BasicModal.propTypes = {
   open: PropTypes.bool.isRequired,
   message: PropTypes.string.isRequired,
-  handleClose: PropTypes.func.isRequired
+  handleClose: PropTypes.func.isRequired,
+  handlePlayAgain: PropTypes.func.isRequired
 }
 
 export default BasicModal

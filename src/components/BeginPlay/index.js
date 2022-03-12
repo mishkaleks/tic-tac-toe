@@ -45,6 +45,8 @@ const BeginPlay = () => {
     showGameBoard: false,
     initError: false,
     firstName: '',
+    xPoints: 0,
+    oPoints: 0,
     secondName: '',
     fields: [
       {
@@ -99,7 +101,7 @@ const BeginPlay = () => {
     message: ''
   })
   const { lastStep, showGameBoard, initError, firstName, secondName, fields, isNextMove, gameOver, message,
-    pause } = state
+    pause, xPoints, oPoints } = state
 
   const formData = lastStep
     ? {
@@ -149,7 +151,13 @@ const BeginPlay = () => {
       // game over if is there a winner
       const winner = findWinner(fields)
       if (winner) {
-        return setState({ ...state, gameOver: !gameOver, message: winner })
+        return setState({
+          ...state,
+          gameOver: !gameOver,
+          message: winner,
+          xPoints: isNextMove ? xPoints + 1 : xPoints,
+          oPoints: isNextMove ? oPoints : oPoints + 1
+        })
       }
 
       // all fields are clicked
@@ -202,7 +210,26 @@ const BeginPlay = () => {
       lastStep: false,
       fields: restartFields,
       isNextMove: true,
-      pause: false
+      pause: false,
+      xPoints: 0,
+      oPoints: 0
+    })
+  }
+
+  const handlePlayAgain = () => {
+    const restartFields = fields.map((item) => {
+      return {
+        ...item,
+        value: ''
+      }
+    })
+
+    setState({
+      ...state,
+      fields: restartFields,
+      isNextMove: true,
+      pause: false,
+      gameOver: false
     })
   }
 
@@ -219,12 +246,15 @@ const BeginPlay = () => {
               firstName={firstName}
               secondName={secondName}
               pause={pause}
+              xPoints={xPoints}
+              oPoints={oPoints}
               handleMarkField={handleMarkField}
               handleCloseModal={handleCloseModal}
               handleOpenRestartGameModal={handleOpenRestartGameModal}
               handleCloseRestartGameModal={handleCloseRestartGameModal}
               handleRestartMatch={handleRestartMatch}
               handleRestartGame={handleRestartGame}
+              handlePlayAgain={handlePlayAgain}
             />
           )
           : <InitPlayer formData={formData} handleClick={handleClick} handleChangeName={handleChangeName} />
