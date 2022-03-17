@@ -1,6 +1,7 @@
 // base
 import React from 'react'
 import PropTypes from 'prop-types'
+import { Link } from 'react-router-dom'
 
 // material-ui
 import { makeStyles } from '@mui/styles'
@@ -20,7 +21,7 @@ const useStyles = makeStyles(() => ({
     minWidth: '40px !important',
     height: '40px',
     borderRadius: '50% !important',
-    boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+    boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'
   },
   currentPlayer: {
     width: '200px',
@@ -29,6 +30,19 @@ const useStyles = makeStyles(() => ({
     whiteSpace: 'nowrap',
     textOverflow: 'ellipsis',
     textAlign: 'center'
+  },
+  toLeaderBoard: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '40px',
+    height: '40px',
+    borderRadius: '50% !important',
+    boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+    textDecoration: 'none',
+    '&:hover, &:active, &:focus': {
+      textDecoration: 'none'
+    }
   }
 }))
 
@@ -49,7 +63,9 @@ const Navbar = (props) => {
             : secondPlayer
         }
       </Typography>
-      <Button classes={{ root: classes.buttonRoot }}>Set</Button>
+      <Link to="/leader-board" className={classes.toLeaderBoard}>
+        Set
+      </Link>
     </div>
   )
 }

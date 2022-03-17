@@ -14,6 +14,9 @@ import { ReactComponent as IconZero } from '../../public/icon_zero.svg'
 import { findWinner } from '../../helpers/findWinner'
 import { allFieldsClicked } from '../../helpers/allFieldsClicked'
 
+// local storage
+import { Storage } from '../../storage/storage'
+
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -41,13 +44,9 @@ const useStyles = makeStyles((theme) => ({
 const BeginPlay = () => {
   const classes = useStyles()
   const [state, setState] = useState({
-    lastStep: false,
     showGameBoard: false,
+    lastStep: false,
     initError: false,
-    firstName: '',
-    secondName: '',
-    crossPoints: 0,
-    zeroPoints: 0,
     fields: [
       {
         id: 0,
@@ -96,15 +95,16 @@ const BeginPlay = () => {
     ],
     // pointer indicating which player should move next
     isNextMove: true,
-    gameOver: false,
     pause: false,
     message: '',
-    numberCrossWins: 0,
-    numberZeroWins: 0,
-    numberDraws: 0
+    modalType: ''
   })
-  const { lastStep, showGameBoard, initError, firstName, secondName, fields, isNextMove, gameOver, message, pause,
-    crossPoints, zeroPoints, numberCrossWins, numberZeroWins, numberDraws } = state
+  const { showGameBoard, lastStep, initError, fields, isNextMove, pause, message, modalType } = state
+
+  // create instance of storage object
+  const storage = new Storage()
+  const { firstName = '', secondName = '', crossPoints = 0, zeroPoints = 0, numberCrossWins = 0, numberZeroWins = 0,
+    numberDraws = 0 } = storage.getData()
 
   const formData = lastStep
     ? {
@@ -122,6 +122,7 @@ const BeginPlay = () => {
       error: initError
     }
 
+  // second step of player initialization
   const handleContinue = () => {
     if (firstName === '' || firstName.length < 4) {
       return setState({ ...state, initError: true })
@@ -129,24 +130,45 @@ const BeginPlay = () => {
     return setState({ ...state, lastStep: true, initError: false })
   }
 
+  // complete player initialization and start the game
   const handlePlay = () => {
     if (secondName === '' || secondName.length < 4) {
       return setState({ ...state, initError: true })
     }
+
+    // load data from previous games from local storage
+    const data = storage.getData()
+    const newData = { ...data, showGameBoard: true }
+    storage.update(newData)
+
     return setState({ ...state, showGameBoard: true, initError: false })
   }
+  // events to initialize players
   const handleClick = lastStep ? handlePlay : handleContinue
 
   const handleChangeName = (e) => {
     const value = e.target.value
+    // load data from previous games from local storage
+    const data = storage.getData()
 
-    lastStep
-      ? setState({ ...state, secondName: value, initError: false })
-      : setState({ ...state, firstName: value, initError: false })
+    if (lastStep) {
+      // work with local storage
+      const newData = { ...data, secondName: value }
+      storage.update(newData)
+
+      return setState({ ...state, initError: false })
+    }
+    // work with local storage
+    const newData = { ...data, firstName: value }
+    storage.update(newData)
+
+    return setState({ ...state, initError: false })
   }
 
   const handleMarkField = (id) => () => {
     const chip = isNextMove ? 'x' : 'o'
+    // load data from previous games from local storage
+    const data = storage.getData()
 
     if (fields[id].value === '') {
       fields[id].value = chip
@@ -154,25 +176,39 @@ const BeginPlay = () => {
       // game over if is there a winner
       const winner = findWinner(fields)
       if (winner) {
-        return setState({
-          ...state,
-          gameOver: !gameOver,
-          message: winner,
+        // work with local storage
+        const newData = {
+          ...data,
           crossPoints: isNextMove ? crossPoints + 1 : crossPoints,
           zeroPoints: isNextMove ? zeroPoints : zeroPoints + 1,
           numberCrossWins: isNextMove ? numberCrossWins + 1 : numberCrossWins,
           numberZeroWins: isNextMove ? numberZeroWins : numberZeroWins + 1
+        }
+        storage.update(newData)
+
+        return setState({
+          ...state,
+          pause: true,
+          message: winner,
+          modalType: 'gameOver'
         })
       }
 
       // all fields are clicked
       const draw = allFieldsClicked(fields)
       if (draw) {
+        // work with local storage
+        const newData = {
+          ...data,
+          numberDraws: numberDraws + 1
+        }
+        storage.update(newData)
+
         return setState({
           ...state,
-          gameOver: !gameOver,
+          pause: true,
           message: 'The players agreed to a draw',
-          numberDraws: numberDraws + 1
+          modalType: 'gameOver'
         })
       }
 
@@ -184,18 +220,15 @@ const BeginPlay = () => {
   }
 
   const handleCloseModal = () => {
-    setState({ ...state, gameOver: false })
-  }
-
-  const handleOpenRestartGameModal = () => {
-    setState({ ...state, pause: true })
-  }
-
-  const handleCloseRestartGameModal = () => {
     setState({ ...state, pause: false })
   }
 
+  const handleOpenRestartGameModal = () => {
+    setState({ ...state, pause: true, modalType: 'pause' })
+  }
+
   const handleRestartMatch = () => {
+    // discard game cells
     const restartFields = fields.map((item) => {
       return {
         ...item,
@@ -207,6 +240,17 @@ const BeginPlay = () => {
   }
 
   const handleRestartGame = () => {
+    // load data from previous games from local storage
+    const data = storage.getData()
+    const newData = {
+      ...data,
+      showGameBoard: false,
+      crossPoints: 0,
+      zeroPoints: 0
+    }
+    storage.update(newData)
+
+    // discard game cells
     const restartFields = fields.map((item) => {
       return {
         ...item,
@@ -220,13 +264,12 @@ const BeginPlay = () => {
       lastStep: false,
       fields: restartFields,
       isNextMove: true,
-      pause: false,
-      crossPoints: 0,
-      zeroPoints: 0
+      pause: false
     })
   }
 
   const handlePlayAgain = () => {
+    // discard game cells
     const restartFields = fields.map((item) => {
       return {
         ...item,
@@ -234,40 +277,51 @@ const BeginPlay = () => {
       }
     })
 
-    setState({
-      ...state,
-      fields: restartFields,
-      isNextMove: true,
-      pause: false,
-      gameOver: false
-    })
+    setState({ ...state, fields: restartFields, isNextMove: true, pause: false, typeModal: '' })
   }
+
+  // get data for modal windows
+  const getModalData = (type) => {
+    switch (type) {
+      case 'gameOver':
+        return {
+          open: pause,
+          message,
+          handleClose: handleCloseModal,
+          handlePlayAgain,
+        }
+      case 'pause':
+        return {
+          open: pause,
+          handleClose: handleCloseModal,
+          handleRestartMatch,
+          handleRestartGame
+        }
+      default:
+        return false
+    }
+  }
+  const modalData = getModalData(modalType)
 
   return (
     <div className={classes.root}>
       {
-        showGameBoard
+        (showGameBoard || storage.getData().showGameBoard)
           ? (
             <GameScreen
               fields={fields}
               isNextMove={isNextMove}
-              gameOver={gameOver}
-              message={message}
               firstName={firstName}
               secondName={secondName}
-              pause={pause}
               crossPoints={crossPoints}
               zeroPoints={zeroPoints}
               numberCrossWins={numberCrossWins}
               numberZeroWins={numberZeroWins}
               numberDraws={numberDraws}
+              modalType={modalType}
+              modalData={modalData}
               handleMarkField={handleMarkField}
-              handleCloseModal={handleCloseModal}
               handleOpenRestartGameModal={handleOpenRestartGameModal}
-              handleCloseRestartGameModal={handleCloseRestartGameModal}
-              handleRestartMatch={handleRestartMatch}
-              handleRestartGame={handleRestartGame}
-              handlePlayAgain={handlePlayAgain}
             />
           )
           : <InitPlayer formData={formData} handleClick={handleClick} handleChangeName={handleChangeName} />
