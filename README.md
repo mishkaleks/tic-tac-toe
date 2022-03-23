@@ -28,4 +28,88 @@ localStorage для хранения истории игры.
 одному элементу для каждого блока доски. И логический указатель который поможет нам определить, какой игрок должен 
 сделать ход следующим.
 
+- Добавить информационные панели на игровой экран.
+
+- Создать и подключить localStorage.
+
+Созданый экземпляр объекта нужен для хранения и обновления данных в localStorage. При инициализации он будет проверять
+есть какие-либо данные из предыдущих игр. Если нет, он создаст новый элемент в локальном хранилище:
+
+```javascript
+// store.js
+
+// create new item for our Tic Tac Toe game
+localStorage.setItem(storageName, initialValue)
+```
+
+Создать экземпляр обькта:
+
+```javascript
+// myComponent.js
+
+// create instance of storage object
+const storage = new Storage()
+```
+
+Загрузить данные из предыдущих игр из localStorage:
+
+```javascript
+// myComponent.js
+
+const data = storage.getData()
+```
+
+```javascript
+// store.js
+
+getData() {
+  return JSON.parse(localStorage.getItem(this.storageName))
+}
+```
+
+**`JSON.parse()` берет строку JSON и трансформирует ее в объект JavaScript*.
+
+Обновить данные в localStorage:
+
+```javascript
+// myComponent.js
+
+const newData = { ...data, secondName: value }
+storage.update(newData)
+```
+
+```javascript
+// store.js
+
+update(data) {
+  localStorage.setItem(this.storageName, JSON.stringify(data))
+}
+```
+
+**`JSON.stringify()` берет объект JavaScript и трансформирует его в строку JSON*.
+
+- Инициализировать React Router DOM.
+
+`$ npm i react-router-dom`
+
+Интерфейс приложения будет синхронизирован с URL на браузере. Будет два маршрута `/` и `/leader-board`.
+
+```javascript
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
+
+export default function App() {
+  return (
+    <Router>
+      <Link to="/">Home</Link>
+      <Link to="/leader-board">Leader Board</Link>
+
+      <Routes>
+        <Route exact path="/" element={<Home />} />
+        <Route path="/leader-board" element={<LeaderBoard />} />
+      </Routes>
+    </Router>
+  )
+}
+```
+
 **Остальные этапы создания приложения будут добавляться по мере развития проекта*.

@@ -1,5 +1,6 @@
 // base
 import React from 'react'
+import { BrowserRouter as Router } from 'react-router-dom'
 
 // material-ui
 import useMediaQuery from '@mui/material/useMediaQuery'
@@ -12,9 +13,9 @@ const App = () => {
   const isMobile = useMediaQuery('(max-width:500px)')
 
   return (
-    <div>
+    <Router>
       {isMobile ? <StartScreen /> : <Stub />}
-    </div>
+    </Router>
   )
 }
 

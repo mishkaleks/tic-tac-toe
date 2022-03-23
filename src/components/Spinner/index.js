@@ -39,7 +39,7 @@ const useStyles = makeStyles(() => ({
   },
   zeroIcon: {
     width: '132px',
-    height: 'auto',
+    height: '132px',
     animation: '$zeroPulse 2s linear infinite',
     WebkitAnimation: '$zeroPulse 2s linear infinite'
   },

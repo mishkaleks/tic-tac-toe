@@ -19,6 +19,7 @@ const useStyles = makeStyles(() => ({
     alignItems: 'center',
     width: '100px',
     height: '54px',
+    marginBottom: '60px',
     padding: '0 3px',
     borderRadius: '24px',
     background: 'linear-gradient(223.26deg, #FFFFFF 1.5%, #F3F3F3 80.41%)',
