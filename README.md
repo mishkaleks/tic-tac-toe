@@ -92,7 +92,7 @@ update(data) {
 
 `$ npm i react-router-dom`
 
-Интерфейс приложения будет синхронизирован с URL на браузере. Будет два маршрута `/` и `/leader-board`.
+Интерфейс приложения будет синхронизирован с URL на браузере. Будет два маршрута `/` и `/leaderboard`.
 
 ```javascript
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
@@ -101,15 +101,24 @@ export default function App() {
   return (
     <Router>
       <Link to="/">Home</Link>
-      <Link to="/leader-board">Leader Board</Link>
+      <Link to="/leaderboard">Leaderboard</Link>
 
       <Routes>
         <Route exact path="/" element={<Home />} />
-        <Route path="/leader-board" element={<LeaderBoard />} />
+        <Route path="/leaderboard" element={<Leaderboard />} />
       </Routes>
     </Router>
   )
 }
 ```
+
+- Добавить страницу Leaderboard.
+
+На странице показать лучшие результаты игроков, которые буду подгружаться из предыдущих игр из localStorage. Создать 
+систему для подсчета балов. 
+
+- Инициализировать lodash.
+
+`$ npm i lodash`
 
 **Остальные этапы создания приложения будут добавляться по мере развития проекта*.
