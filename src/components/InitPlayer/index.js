@@ -65,11 +65,9 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const InitPlayer = ({ formData, handleClick, handleChangeName }) => {
-  const { icon, inputLabelText, playerName, buttonText, error } = formData
+  const { icon, inputLabelText, playerName, buttonText, error, helperText } = formData
 
   const classes = useStyles()
-
-  const helperText = 'Enter your name (at least 4 characters)'
 
   return (
     <div className={classes.root}>

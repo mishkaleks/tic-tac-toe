@@ -4,7 +4,7 @@ import { Routes, Route } from 'react-router-dom'
 
 // components
 import Home from '../../page/home'
-import LeaderBoard from '../../page/leader-board'
+import Leaderboard from '../../page/leaderboard'
 
 const GameScreen = (props) => {
   return (
@@ -18,7 +18,14 @@ const GameScreen = (props) => {
           />
         }
       />
-      <Route path="/leader-board" element={<LeaderBoard />} />
+      <Route
+        path="/leaderboard"
+        element={
+          <Leaderboard
+            {...props} // eslint-disable-line
+          />
+        }
+      />
     </Routes>
   )
 }

@@ -1,5 +1,6 @@
 // base
 import React, { useState } from 'react'
+import _ from 'lodash'
 
 // material-ui
 import { makeStyles } from '@mui/styles'
@@ -13,6 +14,7 @@ import { ReactComponent as IconZero } from '../../public/icon_zero.svg'
 // helpers
 import { findWinner } from '../../helpers/findWinner'
 import { allFieldsClicked } from '../../helpers/allFieldsClicked'
+import { scoring } from '../../helpers/scoring'
 
 // local storage
 import { Storage } from '../../storage/storage'
@@ -47,6 +49,7 @@ const BeginPlay = () => {
     showGameBoard: false,
     lastStep: false,
     initError: false,
+    helperText: '',
     fields: [
       {
         id: 0,
@@ -99,12 +102,12 @@ const BeginPlay = () => {
     message: '',
     modalType: ''
   })
-  const { showGameBoard, lastStep, initError, fields, isNextMove, pause, message, modalType } = state
+  const { showGameBoard, lastStep, initError, helperText, fields, isNextMove, pause, message, modalType } = state
 
   // create instance of storage object
   const storage = new Storage()
-  const { firstName = '', secondName = '', crossPoints = 0, zeroPoints = 0, numberCrossWins = 0, numberZeroWins = 0,
-    numberDraws = 0 } = storage.getData()
+  const { showGameBoard: showGameBoardStorage, firstName = '', secondName = '', crossPoints = 0, zeroPoints = 0,
+    numberCrossWins = 0, numberZeroWins = 0, numberDraws = 0, leaders = [] } = storage.getData()
 
   const formData = lastStep
     ? {
@@ -112,39 +115,57 @@ const BeginPlay = () => {
       inputLabelText: 'Second player',
       buttonText: 'Let\'s play!',
       playerName: secondName,
-      error: initError
+      error: initError,
+      helperText
     }
     : {
       icon: <IconCross className={classes.icon} />,
       inputLabelText: 'First player',
       buttonText: 'Continue',
       playerName: firstName,
-      error: initError
+      error: initError,
+      helperText
     }
 
-  // second step of player initialization
-  const handleContinue = () => {
-    if (firstName === '' || firstName.length < 4) {
-      return setState({ ...state, initError: true })
-    }
-    return setState({ ...state, lastStep: true, initError: false })
-  }
+  // initialize players
+  const handleClick = () => {
+    const name = lastStep ? secondName : firstName
 
-  // complete player initialization and start the game
-  const handlePlay = () => {
-    if (secondName === '' || secondName.length < 4) {
-      return setState({ ...state, initError: true })
+    // get a list of names of all players
+    const listNames = leaders.reduce((total, amount) => {
+      total.push(amount.name)
+      return total
+    }, [])
+
+    // name validation
+    if (name === '' || name.length < 3) {
+      return setState({
+        ...state,
+        initError: true,
+        helperText: 'Enter your name (at least 3 characters)'
+      })
+    }
+
+    // checking name for uniqueness
+    if (_.includes(listNames, name)) {
+      return setState({
+        ...state,
+        initError: true,
+        helperText: 'Name is already use'
+      })
     }
 
     // load data from previous games from local storage
     const data = storage.getData()
-    const newData = { ...data, showGameBoard: true }
+    const newData = lastStep
+      ? { ...data, showGameBoard: true, leaders: [...leaders, { name, victories: 0 }] }
+      : { ...data, leaders: [...leaders, { name, victories: 0 }] }
     storage.update(newData)
 
-    return setState({ ...state, showGameBoard: true, initError: false })
+    return lastStep
+      ? setState({ ...state, showGameBoard: true, initError: false })
+      : setState({ ...state, lastStep: true, initError: false })
   }
-  // events to initialize players
-  const handleClick = lastStep ? handlePlay : handleContinue
 
   const handleChangeName = (e) => {
     const value = e.target.value
@@ -177,12 +198,14 @@ const BeginPlay = () => {
       const winner = findWinner(fields)
       if (winner) {
         // work with local storage
+        const newLeaders = scoring(leaders, true, isNextMove, firstName, secondName)
         const newData = {
           ...data,
           crossPoints: isNextMove ? crossPoints + 1 : crossPoints,
           zeroPoints: isNextMove ? zeroPoints : zeroPoints + 1,
           numberCrossWins: isNextMove ? numberCrossWins + 1 : numberCrossWins,
-          numberZeroWins: isNextMove ? numberZeroWins : numberZeroWins + 1
+          numberZeroWins: isNextMove ? numberZeroWins : numberZeroWins + 1,
+          leaders: newLeaders
         }
         storage.update(newData)
 
@@ -198,9 +221,11 @@ const BeginPlay = () => {
       const draw = allFieldsClicked(fields)
       if (draw) {
         // work with local storage
+        const newLeaders = scoring(leaders, false, isNextMove, firstName, secondName)
         const newData = {
           ...data,
-          numberDraws: numberDraws + 1
+          numberDraws: numberDraws + 1,
+          leaders: newLeaders
         }
         storage.update(newData)
 
@@ -306,7 +331,7 @@ const BeginPlay = () => {
   return (
     <div className={classes.root}>
       {
-        (showGameBoard || storage.getData().showGameBoard)
+        (showGameBoard || showGameBoardStorage)
           ? (
             <GameScreen
               fields={fields}
@@ -320,6 +345,7 @@ const BeginPlay = () => {
               numberDraws={numberDraws}
               modalType={modalType}
               modalData={modalData}
+              leaders={leaders}
               handleMarkField={handleMarkField}
               handleOpenRestartGameModal={handleOpenRestartGameModal}
             />

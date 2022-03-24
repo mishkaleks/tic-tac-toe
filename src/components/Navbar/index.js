@@ -31,7 +31,7 @@ const useStyles = makeStyles(() => ({
     textOverflow: 'ellipsis',
     textAlign: 'center'
   },
-  toLeaderBoard: {
+  toLeaderboard: {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -63,7 +63,7 @@ const Navbar = (props) => {
             : secondPlayer
         }
       </Typography>
-      <Link to="/leader-board" className={classes.toLeaderBoard}>
+      <Link to="/leaderboard" className={classes.toLeaderboard}>
         Set
       </Link>
     </div>
