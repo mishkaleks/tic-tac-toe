@@ -151,7 +151,9 @@ const BeginPlay = () => {
       return setState({
         ...state,
         initError: true,
-        helperText: 'Name is already use'
+        helperText: 'Name is already use',
+        pause: true,
+        modalType: 'reenter'
       })
     }
 
@@ -305,6 +307,20 @@ const BeginPlay = () => {
     setState({ ...state, fields: restartFields, isNextMove: true, pause: false, typeModal: '' })
   }
 
+  // enter the game under an existing name
+  const handleReenter = () => {
+    // load data from previous games from local storage
+    const data = storage.getData()
+
+    if (lastStep) {
+      const newData = { ...data, showGameBoard: true }
+
+      storage.update(newData)
+      setState({ ...state, showGameBoard: true, initError: false, pause: false })
+    }
+    setState({ ...state, lastStep: true, initError: false, pause: false })
+  }
+
   // get data for modal windows
   const getModalData = (type) => {
     switch (type) {
@@ -321,6 +337,12 @@ const BeginPlay = () => {
           handleClose: handleCloseModal,
           handleRestartMatch,
           handleRestartGame
+        }
+      case 'reenter':
+        return {
+          open: pause,
+          handleClose: handleCloseModal,
+          handleReenter
         }
       default:
         return false
@@ -350,7 +372,14 @@ const BeginPlay = () => {
               handleOpenRestartGameModal={handleOpenRestartGameModal}
             />
           )
-          : <InitPlayer formData={formData} handleClick={handleClick} handleChangeName={handleChangeName} />
+          : (
+            <InitPlayer
+              formData={formData}
+              modalData={modalData}
+              handleClick={handleClick}
+              handleChangeName={handleChangeName}
+            />
+          )
       }
     </div>
   )
