@@ -7,12 +7,16 @@ import { makeStyles } from '@mui/styles'
 import Typography from '@mui/material/Typography'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
+import BaseModal from '../Modals/BaseModal'
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center'
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    height: '100%'
   },
   icon: {
     width: '132px',
@@ -64,7 +68,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const InitPlayer = ({ formData, handleClick, handleChangeName }) => {
+const InitPlayer = ({ formData, modalData, handleClick, handleChangeName }) => {
   const { icon, inputLabelText, playerName, buttonText, error, helperText } = formData
 
   const classes = useStyles()
@@ -102,12 +106,14 @@ const InitPlayer = ({ formData, handleClick, handleChangeName }) => {
       >
         <Typography variant="h4" className={classes.buttonText}>{buttonText}</Typography>
       </Button>
+      <BaseModal modalData={modalData} />
     </div>
   )
 }
 
 InitPlayer.propTypes = {
   formData: PropTypes.object.isRequired,
+  modalData: PropTypes.func.isRequired,
   handleClick: PropTypes.func.isRequired,
   handleChangeName: PropTypes.func.isRequired
 }

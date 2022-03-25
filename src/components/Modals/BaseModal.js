@@ -35,9 +35,56 @@ const useStyles = makeStyles(() => ({
 
 const BaseModal = (props) => {
   const { modalType, modalData } = props
-  const { open, message, handleClose, handlePlayAgain, handleRestartMatch, handleRestartGame } = modalData
+  const { open, message, handleClose, handlePlayAgain, handleRestartMatch, handleRestartGame,
+    handleReenter } = modalData
 
   const classes = useStyles()
+
+  const getContent = (modalType) => {
+    if (modalType === 'gameOver') {
+      return (
+        <div>
+          <Typography id="modal-title" variant="h3" component="h3">Game over</Typography>
+          <Typography id="modal-description" variant="h4" component="h4">{message}</Typography>
+          <Button onClick={handlePlayAgain} classes={{ root: classes.buttonRoot }}>
+            Play again
+          </Button>
+        </div>
+      )
+    }
+
+    if (modalType === 'pause') {
+      return (
+        <div>
+          <Typography id="modal-title" variant="h3" component="h3">Restart game</Typography>
+          <div className={classes.buttonContainer}>
+            <Button onClick={handleRestartMatch} classes={{ root: classes.buttonRoot }}>
+              Restart the match
+            </Button>
+            <Button onClick={handleRestartGame} classes={{ root: classes.buttonRoot }}>
+              Start the game over
+            </Button>
+          </div>
+        </div>
+      )
+    }
+
+    return (
+      <div>
+        <Typography id="modal-title" variant="h3" component="h3">Re-enter the game</Typography>
+        <Typography id="modal-description" variant="h4" component="h4">The name Tom is already in use.</Typography>
+        <div className={classes.buttonContainer}>
+          <Button onClick={handleReenter} classes={{ root: classes.buttonRoot }}>
+            Log into an existing account
+          </Button>
+          <Button onClick={handleClose} classes={{ root: classes.buttonRoot }}>
+            Create a new player
+          </Button>
+        </div>
+      </div>
+    )
+  }
+  const content = getContent(modalType)
 
   return (
     <Modal
@@ -46,33 +93,7 @@ const BaseModal = (props) => {
       aria-labelledby="modal-title"
       aria-describedby="modal-description"
     >
-      <Box className={classes.content}>
-        {
-          modalType === 'gameOver'
-            ? (
-              <div>
-                <Typography id="modal-title" variant="h3" component="h3">Game over</Typography>
-                <Typography id="modal-description" variant="h4" component="h4">{message}</Typography>
-                <Button onClick={handlePlayAgain} classes={{ root: classes.buttonRoot }}>
-                  Play again
-                </Button>
-              </div>
-            )
-            : (
-              <div>
-                <Typography id="modal-title" variant="h3" component="h3">Restart Game</Typography>
-                <div className={classes.buttonContainer}>
-                  <Button onClick={handleRestartMatch} classes={{ root: classes.buttonRoot }}>
-                    Restart the match
-                  </Button>
-                  <Button onClick={handleRestartGame} classes={{ root: classes.buttonRoot }}>
-                    Start the game over
-                  </Button>
-                </div>
-              </div>
-            )
-        }
-      </Box>
+      <Box className={classes.content}>{content}</Box>
     </Modal>
   )
 }
