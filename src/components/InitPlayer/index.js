@@ -7,16 +7,23 @@ import { makeStyles } from '@mui/styles'
 import Typography from '@mui/material/Typography'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
-import BaseModal from '../Modals/BaseModal'
+import GameModal from '../GameModal'
 
-const useStyles = makeStyles((theme) => ({
+// components
+import PageBg from '../../public/mobile_page_bg.png'
+
+const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
-    height: '100%'
+    height: '100%',
+    background: `url(${PageBg})`,
+    backgroundRepeat: 'no-repeat !important',
+    backgroundPosition: 'center center !important',
+    backgroundSize: 'cover !important'
   },
   icon: {
     width: '132px',
@@ -60,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: '24px !important',
     padding: '8px 40px !important',
     background: 'linear-gradient(223.26deg, #FFFFFF 1.5%, #F3F3F3 80.41%)',
-    boxShadow: '1.16165px 2.3233px 9.29321px rgba(16, 20, 106, 0.09)'
+    boxShadow: '1.16px 2.3233px 9.29321px rgba(62, 147, 224, 0.22)'
   },
   buttonText: {
     textTransform: 'capitalize',
@@ -68,7 +75,8 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const InitPlayer = ({ formData, modalData, handleClick, handleChangeName }) => {
+const InitPlayer = ({ formData, modalType, modalData, lastStep, firstName, secondName, handleClick,
+  handleChangeName }) => {
   const { icon, inputLabelText, playerName, buttonText, error, helperText } = formData
 
   const classes = useStyles()
@@ -106,14 +114,24 @@ const InitPlayer = ({ formData, modalData, handleClick, handleChangeName }) => {
       >
         <Typography variant="h4" className={classes.buttonText}>{buttonText}</Typography>
       </Button>
-      <BaseModal modalData={modalData} />
+      <GameModal
+        modalType={modalType}
+        modalData={modalData}
+        lastStep={lastStep}
+        firstName={firstName}
+        secondName={secondName}
+      />
     </div>
   )
 }
 
 InitPlayer.propTypes = {
   formData: PropTypes.object.isRequired,
-  modalData: PropTypes.func.isRequired,
+  modalType: PropTypes.string.isRequired,
+  modalData: PropTypes.object.isRequired,
+  lastStep: PropTypes.bool.isRequired,
+  firstName: PropTypes.string.isRequired,
+  secondName: PropTypes.string.isRequired,
   handleClick: PropTypes.func.isRequired,
   handleChangeName: PropTypes.func.isRequired
 }

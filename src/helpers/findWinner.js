@@ -14,7 +14,7 @@ export function findWinner(fields) {
     const [a, b, c] = winningCombinations[i]
 
     if (fields[a].value !== '' && fields[a].value === fields[b].value && fields[a].value === fields[c].value) {
-      return `${fields[a].value} win`
+      return `${fields[a].value}`
     }
   }
 

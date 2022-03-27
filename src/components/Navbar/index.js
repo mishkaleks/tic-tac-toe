@@ -10,18 +10,22 @@ import Typography from '@mui/material/Typography'
 
 // components
 import { ReactComponent as IconRestart } from '../../public/icon_restart.svg'
+import { ReactComponent as IconLeaders } from '../../public/icon_leaders.svg'
 
 const useStyles = makeStyles(() => ({
   root: {
     display: 'flex',
-    alignItems: 'center'
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%'
   },
   buttonRoot: {
     width: '40px',
     minWidth: '40px !important',
     height: '40px',
     borderRadius: '50% !important',
-    boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'
+    background: 'linear-gradient(223.26deg, #FFFFFF 1.5%, #F3F3F3 80.41%)',
+    boxShadow: '1.21059px 3.42px 9.68471px rgba(63, 148, 225, 0.22)'
   },
   currentPlayer: {
     width: '200px',
@@ -38,7 +42,8 @@ const useStyles = makeStyles(() => ({
     width: '40px',
     height: '40px',
     borderRadius: '50% !important',
-    boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+    background: 'linear-gradient(223.26deg, #FFFFFF 1.5%, #F3F3F3 80.41%)',
+    boxShadow: '1.21059px 3.42px 9.68471px rgba(63, 148, 225, 0.22)',
     textDecoration: 'none',
     '&:hover, &:active, &:focus': {
       textDecoration: 'none'
@@ -64,7 +69,7 @@ const Navbar = (props) => {
         }
       </Typography>
       <Link to="/leaderboard" className={classes.toLeaderboard}>
-        Set
+        <IconLeaders />
       </Link>
     </div>
   )

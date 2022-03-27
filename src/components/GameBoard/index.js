@@ -15,7 +15,7 @@ const useStyles = makeStyles(() => ({
     padding: '30px',
     borderRadius: '20px',
     background: 'linear-gradient(223.26deg, #FFFFFF 1.5%, #F3F3F3 80.41%)',
-    boxShadow: '3px 4px 16px rgba(16, 20, 106, 0.09)'
+    boxShadow: '3px 4px 16px rgba(63, 148, 225, 0.12)'
   }
 }))
 

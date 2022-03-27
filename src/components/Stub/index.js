@@ -11,7 +11,7 @@ import { ReactComponent as IconCross } from '../../public/icon_cross.svg'
 import { ReactComponent as IconZero } from '../../public/icon_zero.svg'
 import PageBg from '../../public/pc_page_bg.png'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
     justifyContent: 'center',
