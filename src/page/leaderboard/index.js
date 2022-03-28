@@ -1,13 +1,17 @@
 // base
 import React from 'react'
 import PropTypes from 'prop-types'
+import classNames from 'classnames'
 import { Link } from 'react-router-dom'
 
 // material-ui
 import { makeStyles } from '@mui/styles'
 import Typography from '@mui/material/Typography'
 
-const useStyles = makeStyles((theme) => ({
+// components
+import { ReactComponent as IconBack } from '../../public/icon_back.svg'
+
+const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
     flexDirection: 'column',
@@ -17,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     marginBottom: '30px !important',
-    color: theme.palette.color.default
+    color: theme.palette.baseFont.main
   },
   list: {
     width: '100%',
@@ -30,28 +34,36 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: '12px',
     padding: '8px 25px',
     borderRadius: '20px',
-    boxShadow: '3px 4px 16px rgba(16, 20, 106, 0.09)',
+    boxShadow: '3px 4px 10px rgba(63, 148, 225, 0.16)',
     listStyleType: 'none',
     '&:last-child': {
       marginBottom: 0
-    },
-    '&:nth-child(1)': {
-      background: 'linear-gradient(91.27deg, #FFCC15 -1.16%, #FFDF70 84.6%)'
-    },
-    '&:nth-child(2)': {
-      background: '#E1E1E1'
-    },
-    '&:nth-child(3)': {
-      background: 'radial-gradient(50% 50% at 49.86% 50%, #DFDCCA 0%, #F3F3F3 81.24%)'
     }
   },
-  text: {
-    color: theme.palette.color.default
+  index: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '24px',
+    height: '24px',
+    borderRadius: '50%',
+    border: `1px solid ${theme.palette.color.blue}`,
+    boxShadow: '3px 4px 14px rgba(63, 148, 225, 0.14)',
+    color: theme.palette.baseFont.blue
+  },
+  indexActive: {
+    border: 'none !important',
+    background: 'linear-gradient(87.74deg, #99CEFF 2.43%, #3F94E1 117.84%)',
+    color: '#fff'
   },
   name: {
     flexGrow: 1,
     padding: '0 18px',
-    color: theme.palette.color.default
+    color: theme.palette.baseFont.dark
+  },
+  numberWins: {
+    fontWeight: '800 !important',
+    color: theme.palette.baseFont.blue
   },
   toLeaderboard: {
     display: 'flex',
@@ -60,7 +72,8 @@ const useStyles = makeStyles((theme) => ({
     width: '40px',
     height: '40px',
     borderRadius: '50% !important',
-    boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+    background: 'linear-gradient(223.26deg, #FFFFFF 1.5%, #F3F3F3 80.41%)',
+    boxShadow: '1.21059px 3.42px 9.68471px rgba(63, 148, 225, 0.22)',
     textDecoration: 'none',
     '&:hover, &:active, &:focus': {
       textDecoration: 'none'
@@ -92,20 +105,25 @@ const Leaderboard = (props) => {
         {
           result.map((item, index) => {
             const { name, victories } = item
+            const active = index === 0 || index === 1 || index === 2
 
             return (
               <li key={index} className={classes.item}>
-                <Typography variant="h6" className={classes.text}>{index + 1}</Typography>
+                <Typography
+                  variant="h5"
+                  component="div"
+                  className={classNames(classes.index, active && classes.indexActive)}
+                >
+                  {index + 1}
+                </Typography>
                 <Typography variant="h4" className={classes.name}>{name}</Typography>
-                <Typography variant="h4" className={classes.text}>{victories}</Typography>
+                <Typography variant="h4" className={classes.numberWins}>{victories}</Typography>
               </li>
             )
           })
         }
       </ul>
-      <Link to="/" className={classes.toLeaderboard}>
-        H
-      </Link>
+      <Link to="/" className={classes.toLeaderboard}><IconBack /></Link>
     </div>
   )
 }

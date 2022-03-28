@@ -7,12 +7,19 @@ import { makeStyles } from '@mui/styles'
 // components
 import { ReactComponent as IconCross } from '../../public/icon_cross.svg'
 import { ReactComponent as IconZero } from '../../public/icon_zero.svg'
+import PageBg from '../../public/mobile_page_bg.png'
 
 const useStyles = makeStyles(() => ({
   root: {
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    width: '100%',
+    height: '100%',
+    background: `url(${PageBg})`,
+    backgroundRepeat: 'no-repeat !important',
+    backgroundPosition: 'center center !important',
+    backgroundSize: 'cover !important'
   },
   crossIcon: {
     width: '132px',
