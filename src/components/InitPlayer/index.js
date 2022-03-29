@@ -75,7 +75,8 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-const InitPlayer = ({ formData, modalData, lastStep, firstName, secondName, handleClick, handleChangeName }) => {
+const InitPlayer = ({ formData, modalType, modalData, lastStep, firstName, secondName, handleClick,
+  handleChangeName }) => {
   const { icon, inputLabelText, playerName, buttonText, error, helperText } = formData
 
   const classes = useStyles()
@@ -114,6 +115,7 @@ const InitPlayer = ({ formData, modalData, lastStep, firstName, secondName, hand
         <Typography variant="h4" className={classes.buttonText}>{buttonText}</Typography>
       </Button>
       <GameModal
+        modalType={modalType}
         modalData={modalData}
         lastStep={lastStep}
         firstName={firstName}
@@ -125,7 +127,8 @@ const InitPlayer = ({ formData, modalData, lastStep, firstName, secondName, hand
 
 InitPlayer.propTypes = {
   formData: PropTypes.object.isRequired,
-  modalData: PropTypes.func.isRequired,
+  modalType: PropTypes.string.isRequired,
+  modalData: PropTypes.object.isRequired,
   lastStep: PropTypes.bool.isRequired,
   firstName: PropTypes.string.isRequired,
   secondName: PropTypes.string.isRequired,

@@ -348,7 +348,7 @@ const BeginPlay = () => {
           handleReenter
         }
       default:
-        return false
+        return {}
     }
   }
   const modalData = getModalData(modalType)
@@ -378,6 +378,7 @@ const BeginPlay = () => {
           : (
             <InitPlayer
               formData={formData}
+              modalType={modalType}
               modalData={modalData}
               lastStep={lastStep}
               firstName={firstName}

@@ -27,7 +27,7 @@ const useStyles = makeStyles(() => ({
 
 const GameModal = (props) => {
   const { modalType, modalData, lastStep, firstName, secondName } = props
-  const { open, message, handleClose, handlePlayAgain, handleRestartMatch, handleRestartGame,
+  const { open = false, message, handleClose, handlePlayAgain, handleRestartMatch, handleRestartGame,
     handleReenter } = modalData
   const name = lastStep ? secondName : firstName
 
@@ -54,13 +54,17 @@ const GameModal = (props) => {
       }
     }
 
-    return {
-      title: `Player ${name} already exists`,
-      labelFirstButton: 'Keep playing',
-      labelSecondButton: 'Create a new player',
-      handleFirstButton: handleReenter,
-      handleSecondButton: handleClose
+    if (modalType === 'reenter') {
+      return {
+        title: `Player ${name} already exists`,
+        labelFirstButton: 'Keep playing',
+        labelSecondButton: 'Create a new player',
+        handleFirstButton: handleReenter,
+        handleSecondButton: handleClose
+      }
     }
+
+    return {}
   }
   const data = getData(modalType)
 
