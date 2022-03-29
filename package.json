@@ -1,4 +1,5 @@
 {
+  "homepage": "https://korovai.github.io/tic-tac-toe",
   "name": "tic-tac-toe",
   "version": "0.1.0",
   "private": true,
@@ -12,6 +13,7 @@
     "@testing-library/user-event": "^13.5.0",
     "classnames": "^2.3.1",
     "eslint-config-airbnb": "^19.0.4",
+    "gh-pages": "^3.2.3",
     "lodash": "^4.17.21",
     "prop-types": "^15.8.1",
     "react": "^17.0.2",
@@ -23,6 +25,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
