@@ -25,7 +25,7 @@ const useStyles = makeStyles(() => ({
 
 const Home = (props) => {
   const { fields, isNextMove, firstName, secondName, crossPoints, zeroPoints, numberCrossWins, numberZeroWins,
-    numberDraws, modalType, modalData, handleMarkField, handleOpenRestartGameModal } = props
+    numberDraws, modalType, modalData = {}, handleMarkField, handleOpenRestartGameModal } = props
 
   const classes = useStyles()
 
