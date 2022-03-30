@@ -11,7 +11,7 @@ const GameScreen = (props) => {
     <Routes>
       <Route
         exact
-        path="/"
+        path="/tic-tac-toe"
         element={
           <Home
             {...props} // eslint-disable-line
@@ -19,7 +19,7 @@ const GameScreen = (props) => {
         }
       />
       <Route
-        path="/leaderboard"
+        path="/tic-tac-toe/leaderboard"
         element={
           <Leaderboard
             {...props} // eslint-disable-line
