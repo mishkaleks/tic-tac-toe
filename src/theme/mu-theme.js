@@ -47,15 +47,17 @@ const theme = createTheme({
     },
     baseFont: {
       main: '#414946',
+      dark: '#575F5C',
       light: '#DBD6D6',
-      blue: '#6FA9DE'
+      blue: '#51A0E7'
     },
     color: {
       default: '#414946',
       light: '#DBD6D6',
       green: '#33E794',
       red: '#DE272F',
-      blue: '#6FA9DE'
+      blue: '#5BA6EA',
+      lightBlue: '#C6DEF3'
     }
   }
 })

@@ -23,7 +23,7 @@ const useStyles = makeStyles(() => ({
     padding: '0 3px',
     borderRadius: '24px',
     background: 'linear-gradient(223.26deg, #FFFFFF 1.5%, #F3F3F3 80.41%)',
-    boxShadow: '1.21059px 2.42118px 9.68471px rgba(16, 20, 106, 0.09)'
+    boxShadow: '1.21059px 2.42118px 9.68471px rgba(63, 148, 225, 0.12)'
   },
   wrChip: {
     display: 'flex',

@@ -11,14 +11,15 @@ import Scoreboard from '../../components/Scoreboard'
 import GameBoard from '../../components/GameBoard'
 import Indicator from '../../components/Indicator'
 import Navbar from '../../components/Navbar'
-import BaseModal from '../../components/Modals/BaseModal'
+import GameModal from '../../components/GameModal'
 
 const useStyles = makeStyles(() => ({
   root: {
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    width: '100%'
   }
 }))
 
@@ -49,7 +50,7 @@ const Home = (props) => {
         secondPlayer={secondName}
         handleOpenRestartGameModal={handleOpenRestartGameModal}
       />
-      <BaseModal modalType={modalType} modalData={modalData} />
+      <GameModal modalType={modalType} modalData={modalData} />
     </div>
   )
 }

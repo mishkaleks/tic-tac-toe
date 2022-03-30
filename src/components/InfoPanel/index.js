@@ -14,7 +14,9 @@ import { ReactComponent as IconDraw } from '../../public/icon_draw.svg'
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
+    justifyContent: 'center',
     alignItems: 'center',
+    width: '100%',
     marginBottom: '60px'
   },
   wrapper: {

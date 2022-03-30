@@ -11,7 +11,9 @@ import Typography from '@mui/material/Typography'
 const useStyles = makeStyles(() => ({
   root: {
     display: 'flex',
+    justifyContent: 'center',
     alignItems: 'center',
+    width: '100%',
     marginBottom: '20px'
   },
   playerName: {
@@ -29,7 +31,7 @@ const useStyles = makeStyles(() => ({
     padding: '3px 25px',
     borderRadius: '35px',
     background: '#fff',
-    boxShadow: '3px 4px 14px rgba(0, 0, 0, 0.09)',
+    boxShadow: '1.21059px 2.42118px 9.68471px rgba(63, 148, 225, 0.12)',
     fontSize: '16px'
   }
 }))
