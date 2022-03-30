@@ -68,7 +68,7 @@ const Navbar = (props) => {
             : secondPlayer
         }
       </Typography>
-      <Link to="/leaderboard" className={classes.toLeaderboard}>
+      <Link to="/tic-tac-toe/leaderboard" className={classes.toLeaderboard}>
         <IconLeaders />
       </Link>
     </div>

@@ -123,7 +123,7 @@ const Leaderboard = (props) => {
           })
         }
       </ul>
-      <Link to="/" className={classes.toLeaderboard}><IconBack /></Link>
+      <Link to="/tic-tac-toe" className={classes.toLeaderboard}><IconBack /></Link>
     </div>
   )
 }
