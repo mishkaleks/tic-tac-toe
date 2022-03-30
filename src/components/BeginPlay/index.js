@@ -10,6 +10,7 @@ import GameScreen from '../GameScreen'
 import InitPlayer from '../InitPlayer'
 import { ReactComponent as IconCross } from '../../public/icon_cross.svg'
 import { ReactComponent as IconZero } from '../../public/icon_zero.svg'
+import PageBg from '../../public/mobile_page_bg.png'
 
 // helpers
 import { findWinner } from '../../helpers/findWinner'
@@ -19,27 +20,31 @@ import { scoring } from '../../helpers/scoring'
 // local storage
 import { Storage } from '../../storage/storage'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
-    height: '100%'
+    height: '100%',
+    background: `url(${PageBg})`,
+    backgroundRepeat: 'no-repeat !important',
+    backgroundPosition: 'center center !important',
+    backgroundSize: 'cover !important'
   },
   icon: {
     width: '132px',
     height: '132px'
   },
   customButtonRoot1: {
-    borderRight: `1px solid ${theme.palette.color.light} !important`,
-    borderBottom: `1px solid ${theme.palette.color.light} !important`
+    borderRight: `1px solid ${theme.palette.color.lightBlue} !important`,
+    borderBottom: `1px solid ${theme.palette.color.lightBlue} !important`
   },
   customButtonRoot2: {
-    borderBottom: `1px solid ${theme.palette.color.light} !important`
+    borderBottom: `1px solid ${theme.palette.color.lightBlue} !important`
   },
   customButtonRoot3: {
-    borderRight: `1px solid ${theme.palette.color.light} !important`
+    borderRight: `1px solid ${theme.palette.color.lightBlue} !important`
   }
 }))
 
@@ -108,6 +113,7 @@ const BeginPlay = () => {
   const storage = new Storage()
   const { showGameBoard: showGameBoardStorage, firstName = '', secondName = '', crossPoints = 0, zeroPoints = 0,
     numberCrossWins = 0, numberZeroWins = 0, numberDraws = 0, leaders = [] } = storage.getData()
+  const showGameScreen = showGameBoard || showGameBoardStorage
 
   const formData = lastStep
     ? {
@@ -171,18 +177,11 @@ const BeginPlay = () => {
 
   const handleChangeName = (e) => {
     const value = e.target.value
-    // load data from previous games from local storage
-    const data = storage.getData()
+    const nameLabel = lastStep ? 'secondName' : 'firstName'
 
-    if (lastStep) {
-      // work with local storage
-      const newData = { ...data, secondName: value }
-      storage.update(newData)
-
-      return setState({ ...state, initError: false })
-    }
     // work with local storage
-    const newData = { ...data, firstName: value }
+    const data = storage.getData()
+    const newData = { ...data, [nameLabel]: value }
     storage.update(newData)
 
     return setState({ ...state, initError: false })
@@ -199,6 +198,8 @@ const BeginPlay = () => {
       // game over if is there a winner
       const winner = findWinner(fields)
       if (winner) {
+        const nameWinner = winner === 'x' ? firstName : secondName
+
         // work with local storage
         const newLeaders = scoring(leaders, true, isNextMove, firstName, secondName)
         const newData = {
@@ -214,7 +215,7 @@ const BeginPlay = () => {
         return setState({
           ...state,
           pause: true,
-          message: winner,
+          message: `${nameWinner} you win!`,
           modalType: 'gameOver'
         })
       }
@@ -234,7 +235,7 @@ const BeginPlay = () => {
         return setState({
           ...state,
           pause: true,
-          message: 'The players agreed to a draw',
+          message: 'Dead heat!',
           modalType: 'gameOver'
         })
       }
@@ -313,9 +314,10 @@ const BeginPlay = () => {
     const data = storage.getData()
 
     if (lastStep) {
+      // work with local storage
       const newData = { ...data, showGameBoard: true }
-
       storage.update(newData)
+
       setState({ ...state, showGameBoard: true, initError: false, pause: false })
     }
     setState({ ...state, lastStep: true, initError: false, pause: false })
@@ -330,6 +332,7 @@ const BeginPlay = () => {
           message,
           handleClose: handleCloseModal,
           handlePlayAgain,
+          handleRestartGame
         }
       case 'pause':
         return {
@@ -345,7 +348,7 @@ const BeginPlay = () => {
           handleReenter
         }
       default:
-        return false
+        return {}
     }
   }
   const modalData = getModalData(modalType)
@@ -353,7 +356,7 @@ const BeginPlay = () => {
   return (
     <div className={classes.root}>
       {
-        (showGameBoard || showGameBoardStorage)
+        showGameScreen
           ? (
             <GameScreen
               fields={fields}
@@ -375,7 +378,11 @@ const BeginPlay = () => {
           : (
             <InitPlayer
               formData={formData}
+              modalType={modalType}
               modalData={modalData}
+              lastStep={lastStep}
+              firstName={firstName}
+              secondName={secondName}
               handleClick={handleClick}
               handleChangeName={handleChangeName}
             />
