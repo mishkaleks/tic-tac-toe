@@ -2,6 +2,7 @@
 .next/
 node_modules/
 dist/
+build/
 *.iml
 npm-debug.log
 .env
